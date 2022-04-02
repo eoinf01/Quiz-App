@@ -27,11 +27,7 @@ class Settings extends StatelessWidget{
                 appBar: AppBar(
                   backgroundColor: Colors.white,
                   elevation: 0,
-                  title: Text("Settings",style: GoogleFonts.roboto(
-                    fontSize: 23.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),textAlign: TextAlign.start,),
+                  title: Text("Settings",style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold,fontSize: 23.sp)),
                 ),
                 body: Container(
                     width: 1.sw,
@@ -46,16 +42,29 @@ class Settings extends StatelessWidget{
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 10.h,),
-                                  Text("Display Name",style: GoogleFonts.roboto(
-                                    fontSize: 14.sp,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                  ),textAlign: TextAlign.start,),
-                                  SizedBox(height: 5.h,),
-                                  Form(
+                                  Container(
+                                    width: 1.sw,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.shade300,
+                                          spreadRadius: 1,
+                                          blurRadius: 3,
+                                          offset: Offset(1,1)
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.all(Radius.circular(10))
+                                    ),
+                                    child: Form(
                                       key: _controller.formKey,
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
+                                          Text("Display Name",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 15.sp)),
+                                          SizedBox(height: 15,),
                                           TextFormField(
                                             validator: (value){
                                               if(value == null || value.isEmpty){
@@ -95,6 +104,55 @@ class Settings extends StatelessWidget{
                                         ],
                                       ),
                                     ),
+                                  ),
+                                  SizedBox(height: 15,),
+
+                                  Container(
+                                    width: 1.sw,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey.shade300,
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: Offset(3,3)
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.all(Radius.circular(10))
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Modes",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 15.sp)),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 15,),
+                                  Container(
+                                    width: 1.sw,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey.shade300,
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: Offset(3,3)
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.all(Radius.circular(10))
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Statistics",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 15.sp)),
+
+                                      ],
+                                    ),
+                                  ),
                                 SizedBox(height: 20,),
                                   TextButton(
                                     onPressed: () {  Get.snackbar("Statistics reset!", "Your test statistics have been reset.",
@@ -107,11 +165,14 @@ class Settings extends StatelessWidget{
                                   ),
                                   Container(
                                     height: 40,
+                                    width: 1.sw,
                                     alignment: Alignment.center,
-                                    child: ElevatedButton(
+                                    child:
+                                    ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          primary: Colors.blue.shade700,
-                                          shape: StadiumBorder()
+                                          primary: Color.fromRGBO(0, 114, 255, 1),
+                                          shape: StadiumBorder(),
+                                        minimumSize: Size(1.sw,40)
                                       ), onPressed: () {
                                         _controller.updateSettings();
                                         Get.snackbar("Success", "Your settings have been updated successfully",
@@ -126,7 +187,7 @@ class Settings extends StatelessWidget{
                                   )
                                 ],
                               ),
-                              padding: EdgeInsets.only(left: 30,right: 30),
+                              padding: EdgeInsets.only(left: 15,right: 15),
                             )
                         )
                     )

@@ -7,7 +7,7 @@ import 'package:theorytest/models/mode_model.dart';
 import 'package:theorytest/views/dashboard/screens/modes/widgets/mode_container.dart';
 
 class modeScreen extends StatelessWidget{
-  List<modeModel> models = [modeModel(Colors.white, "Rapid-Fire", "You only have 30 seconds to answer the questions!", AssetImage("assets/alarm.png")),modeModel(Colors.white, "Rapid-Fire", "You only have 30 seconds to answer the questions!", AssetImage("assets/alarm.png"))];
+  List<modeModel> models = [modeModel(Colors.white, "Rapidfire", "You only have 30 seconds to answer the questions!", AssetImage("assets/alarm.png")),modeModel(Colors.white, "Marathon", "Answer as many questions you can correctly in a row!", AssetImage("assets/alarm.png"))];
 
   @override
   Widget build(BuildContext context) {

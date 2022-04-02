@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:theorytest/controllers/question_controller.dart';
-import 'package:theorytest/controllers/rapid_controller.dart';
+import 'package:theorytest/modals/HintModal.dart';
 import 'package:theorytest/models/question.dart';
-import 'package:theorytest/views/quiz/components/hero_page_route.dart';
-import 'package:theorytest/views/quiz/components/hint_popup.dart';
+
+import '../../../modals/FloatingHintModal.dart';
 
 
 class questionCard extends StatelessWidget {
@@ -22,7 +22,7 @@ class questionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    rapidQuestionController _controller = Get.find<rapidQuestionController>();
+    QuestionController _controller = Get.find<QuestionController>();
     return Column(
       children: [
     Container(
@@ -61,9 +61,10 @@ class questionCard extends StatelessWidget {
                 ),
                 child:
                     GestureDetector(
-                      onTap: ()=>Navigator.of(context).push(HeroPageRoute(builder: (context){
-                       return TodoPopupCard();
-    })),
+                      onTap: ()=>{showFloatingModalBottomSheet(
+                        context: context,
+                        builder: (context) => HintModal(hintText: "Default Hint ",),
+                      )},
                       child:
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

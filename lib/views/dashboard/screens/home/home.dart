@@ -6,13 +6,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:theorytest/constants/constants.dart' as Constants;
 import 'package:theorytest/controllers/dashboard_controller.dart';
+import 'package:theorytest/modals/PracticeModal.dart';
 import 'package:theorytest/models/category_model.dart';
 import 'package:theorytest/views/dashboard/screens/home/components/barchart.dart';
 import 'package:theorytest/views/dashboard/screens/home/components/category_widget.dart';
-import 'package:theorytest/views/quiz/quiz.dart';
 
+import '../../../../modals/PracticeModal.dart';
 import 'components/snapping_list_physics.dart';
 
 
@@ -155,21 +157,6 @@ class HomeScreenState extends State<HomeScreen>{
                                                 colors: [Color.fromRGBO(252, 181, 68, 0.9),Color.fromRGBO(252, 181, 2, 0.9)]
                                             )
                                         ),
-                                        child: Column(
-                                          children: [
-                                            // SizedBox(
-                                            //   height: 34.h,
-                                            //   child: TextButton(onPressed: ()=>{}, child: Text("Start Test",
-                                            //     style: GoogleFonts.roboto(
-                                            //       fontSize: 14.sp,
-                                            //       color: Colors.white,
-                                            //       fontWeight: FontWeight.w400,
-                                            //       letterSpacing: 1
-                                            //     )
-                                            //   )),
-                                            // )
-                                          ],
-                                        )
                                     ),
                                   ],
                                 ),
@@ -185,7 +172,14 @@ class HomeScreenState extends State<HomeScreen>{
                                         color: Colors.lightBlue,
                                         shape: BoxShape.circle
                                       ),
-                                      child: IconButton(onPressed: ()=>{Get.off(()=> questionScreen())}, icon: Icon(Icons.play_arrow,color: Colors.white,size: 34,),splashRadius: 10,),
+                                      child: IconButton(onPressed: ()=>{showBarModalBottomSheet(
+                                        expand: false,
+                                        isDismissible: true,
+                                        elevation: 0,
+                                        barrierColor: Colors.black87,
+                                        context: context,
+                                        builder: (context) => practiceModal(),
+                                      )}, icon: Icon(Icons.play_arrow,color: Colors.white,size: 34,),splashRadius: 10,),
                                     )
                                   ],
                                 ))
