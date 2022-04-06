@@ -20,13 +20,12 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   int? touchedIndex = 0;
 
-  bool isPlaying = false;
-
   @override
-  void initState() {
+  void initState(){
     super.initState();
     data = box.read("scores");
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +36,13 @@ class BarChartSample1State extends State<BarChartSample1> {
         boxShadow: [
           BoxShadow(
             color: Color.fromARGB(255,218, 218, 218,),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: Offset(3.0,2)
+            spreadRadius: 1.w,
+            blurRadius: 8.w,
+            offset: Offset(3.0.w,2.w)
           ),
         ],
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(20))
+        borderRadius: BorderRadius.all(Radius.circular(20.r))
       ),
         child: Stack(
           children: <Widget>[
@@ -56,21 +55,21 @@ class BarChartSample1State extends State<BarChartSample1> {
                 children: <Widget>[
                   Container(
                     margin:EdgeInsets.only(top: 10,left: 10),
-                    child: const Text(
+                    child: Text(
                       'Last Five Tests',
                       style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 13,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w500),
                     ),
                   )
                   ,
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding:  EdgeInsets.only(right: 8.0.w),
                       child: BarChart(
                         mainBarData(),
                         swapAnimationDuration: animDuration,
@@ -97,16 +96,15 @@ class BarChartSample1State extends State<BarChartSample1> {
       x: x,
       barRods: [
         BarChartRodData(
-          y: y,
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          width: 20,
-          colors: isTouched ? [Color.fromRGBO(0, 114, 255, 1),Color.fromRGBO(0, 114, 255,1)] : [Color.fromRGBO(231,231,231,1),Color.fromRGBO(245,245,245,1)],
+          width: 20.w,
+          color: isTouched ? Color.fromRGBO(0, 114, 255,1) : Color.fromRGBO(231,231,231,1),
           borderSide: const BorderSide(color: Colors.white, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            y: 100,
-            colors: [Colors.white],
-          ),
+            toY: 100,
+            color: Colors.white,
+          ), toY: y,
         ),
       ],
       barsSpace: 1,
@@ -231,14 +229,14 @@ class BarChartSample1State extends State<BarChartSample1> {
                 TextStyle(
                   color: weekDay == "Failed" ? Colors.red: Colors.green,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: (rod.y - 1).toString(),
-                    style: const TextStyle(
+                    text: (rod.fromY - 1).toString(),
+                    style:  TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -255,71 +253,93 @@ class BarChartSample1State extends State<BarChartSample1> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        bottomTitles: SideTitles(
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        bottomTitles: AxisTitles(sideTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (context, value) => TextStyle(
-              color: value == touchedIndex ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold, fontSize: 14),
-          margin: 16,
-          getTitles: (double value) {
-            switch (value.toInt()) {
-              case 0:
-                if(data[4-value.toInt()] >= 35){
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-                else{
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-              case 1:
-                if(data[4-value.toInt()] >= 35){
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-                else{
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-              case 2:
-                if(data[4-value.toInt()] >= 35){
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-                else{
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-              case 3:
-                if(data[4-value.toInt()] >= 35){
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-                else{
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-              case 4:
-                if(data[4-value.toInt()] >= 35){
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-                else{
-                  return ((data[4-value.toInt()]/40)*100).toInt().toString();
-                }
-              default:
-                return '';
-            }
-          },
+          getTitlesWidget: (value,titleMeta){
+            return
+            Padding(padding: EdgeInsets.only(top: 5),
+                child: Text("${((data[4-value.toInt()]/40)*100).toInt().toString()}",
+                style: TextStyle(
+                  color: value == touchedIndex ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold, fontSize: 14),)
+              );
+            },
+          ),
         ),
-          leftTitles: SideTitles(
-            getTextStyles: (context, value) => const TextStyle(
-              color: Colors.grey,
-              fontSize: 12
-            ),
+          leftTitles: AxisTitles(sideTitles: SideTitles(
+              getTitlesWidget: (value,titleMeta){
+                return
+                  Text("${value.toInt()}",
+                      textAlign: TextAlign.end,
+                      style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey,));
+                  },
               showTitles: true,
-              interval: 20,
-              reservedSize: 32,
-            margin: -20
-          )
+              reservedSize: 40,
+              interval: 20
+          ),
+      ),
+    )
+        , barGroups: showingGroups(),
+      gridData: FlGridData(show: false),
+      borderData: FlBorderData(show: false)
+    );
+  }
+
+  BarChartData randomData() {
+    return BarChartData(
+      barTouchData: BarTouchData(
+        enabled: false,
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 38,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
       ),
       borderData: FlBorderData(
         show: false,
       ),
-      barGroups: showingGroups(),
+      barGroups: List.generate(data.length, (i) {
+        switch (i) {
+          case 0:
+            return makeGroupData(0, 0,);
+          case 1:
+            return makeGroupData(1, 0,);
+          case 2:
+            return makeGroupData(2, 5,);
+          case 3:
+            return makeGroupData(3, 0,);
+          case 4:
+            return makeGroupData(4, 0,);
+          case 5:
+            return makeGroupData(5, 0,);
+          case 6:
+            return makeGroupData(6, 0,);
+          default:
+            return throw Error();
+        }
+      }),
       gridData: FlGridData(show: false),
     );
   }
+
 }
