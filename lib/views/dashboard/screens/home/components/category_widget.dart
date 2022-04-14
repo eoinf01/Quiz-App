@@ -19,16 +19,16 @@ class categoryWidget extends StatelessWidget{
       clipBehavior: Clip.none,
       children: [
         Container(
-          alignment: Alignment.centerLeft,
           width: 200,
-          height: 110,
-          padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
+          height: 120,
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
           decoration: BoxDecoration(
               color: model.color,
               borderRadius: BorderRadius.all(Radius.circular(20)),
               boxShadow: [BoxShadow(
-                  blurRadius: 4,
-                  spreadRadius: 3,
+                  blurRadius: 4.w,
+                  spreadRadius: 3.w,
                   color: Color.fromARGB(255,218, 218, 218,)
               )]
           ),
@@ -36,6 +36,7 @@ class categoryWidget extends StatelessWidget{
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(model.name,
                 style: GoogleFonts.spaceGrotesk(
@@ -47,6 +48,7 @@ class categoryWidget extends StatelessWidget{
               SizedBox(height: 10.h,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   CircularPercentIndicator(radius: 25.0,
                     center: Text("0/30",style: GoogleFonts.spaceGrotesk(
@@ -81,9 +83,9 @@ class categoryWidget extends StatelessWidget{
           ),
         ),
         Positioned(child: model.image,
-            height: 65,
-            right: -12,
-        top: -22,),
+            height: 55,
+            right: -9,
+        top: -18,),
       ],
     );
   }

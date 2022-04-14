@@ -11,8 +11,11 @@ import 'package:theorytest/constants/constants.dart' as Constants;
 import 'package:theorytest/controllers/dashboard_controller.dart';
 import 'package:theorytest/modals/PracticeModal.dart';
 import 'package:theorytest/models/category_model.dart';
-import 'package:theorytest/views/dashboard/screens/home/components/barchart.dart';
+import 'package:theorytest/views/categories/categories.dart';
+import 'package:theorytest/views/statistics/components/barchart.dart';
 import 'package:theorytest/views/dashboard/screens/home/components/category_widget.dart';
+import 'package:theorytest/views/statistics/statistics.dart';
+
 
 import '../../../../modals/PracticeModal.dart';
 import 'components/snapping_list_physics.dart';
@@ -43,7 +46,7 @@ class HomeScreenState extends State<HomeScreen>{
        Stack(
          children: [
            Scaffold(
-             extendBody: true,
+             extendBody: false,
              backgroundColor: Color.fromRGBO(253, 253, 253, 1),
              body: Container(
                width: 1.sw,
@@ -51,6 +54,8 @@ class HomeScreenState extends State<HomeScreen>{
                child: SafeArea(
                  child:
                     SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 20.h),
+
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -90,12 +95,12 @@ class HomeScreenState extends State<HomeScreen>{
                                   shape: BoxShape.circle,
                                   boxShadow: [BoxShadow(
                                     color: Color.fromRGBO(220, 220, 220, 1),
-                                    spreadRadius: 2,
-                                    blurRadius: 10
+                                    spreadRadius: 2.w,
+                                    blurRadius: 10.w
                                   )]
                                 ),
                                 child: CircleAvatar(
-                                  radius: 22.0,
+                                  radius: 22.0.r,
                                   backgroundColor: Colors.white,
                                   child: Text(controller.username.value == "" ? "L" : controller.username.value[0].toUpperCase()),
                                 ),
@@ -110,9 +115,9 @@ class HomeScreenState extends State<HomeScreen>{
                             padding: EdgeInsets.all(20.r),
                             decoration: BoxDecoration(
                                 boxShadow: [BoxShadow(
-                                    blurRadius: 6,
-                                    spreadRadius: 3,
-                                    offset: Offset(1.0,3.0),
+                                    blurRadius: 6.w,
+                                    spreadRadius: 3.w,
+                                    offset: Offset(1.0.w,3.0.h),
                                     color: Color.fromARGB(94,137, 255, 250,)
                                 )],
                                 image: DecorationImage(
@@ -122,7 +127,7 @@ class HomeScreenState extends State<HomeScreen>{
                                 ),
 
                                 borderRadius: BorderRadius.all(
-                                    Radius.circular(15)
+                                    Radius.circular(15.r)
                                 )
                             ),
                             child:
@@ -166,8 +171,8 @@ class HomeScreenState extends State<HomeScreen>{
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(left: 30),
-                                      width: 60,
-                                      height:60,
+                                      width: 60.w,
+                                      height:60.h,
                                       decoration: BoxDecoration(
                                         color: Colors.lightBlue,
                                         shape: BoxShape.circle
@@ -205,7 +210,7 @@ class HomeScreenState extends State<HomeScreen>{
                                       )
                                   )
                               ),
-                              TextButton(onPressed: (){},
+                              TextButton(onPressed: (){ Get.to(()=>categoryScreen());},
                                   child: Text("View All >",style: TextStyle(
                                       decoration: TextDecoration.underline,
                                     color: Colors.black
@@ -213,21 +218,26 @@ class HomeScreenState extends State<HomeScreen>{
                             ],
                           )
                         ),
-                       HorizontalSnappingList(
-                            listHeight: 120,
-                            itemWidth: 250,
-                            itemHorizontalMargin: 20,
-                            itemCount: 6,
-                            itemBuilder: (context, i) {
-                              return categoryWidget(
-                                model: models[i],
-                              );
-                            },
-                          ),
+                      Container(
+                        height: 120,
+                        child: ListView.separated(
+                          clipBehavior: Clip.none,
+                          physics: SnappingListScrollPhysics(itemExtent: 220),
+                          padding: EdgeInsets.only(left: 30.w,top: 5.h,bottom: 5.h),
+                          controller: controller.scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: models.length,
+                          itemBuilder: (context, i) {
+                            return categoryWidget(model: models[i]);
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(width: 20,);
+                          },
+                        ),),
                         //Progress
-                        SizedBox(height: 5,),
+                        SizedBox(height: 5.h,),
                         Padding(
-                          padding: EdgeInsets.only(left: 30.w,right: 15),
+                          padding: EdgeInsets.only(left: 30.w,right: 15.w),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -240,7 +250,7 @@ class HomeScreenState extends State<HomeScreen>{
                                       )
                                   )
                               ),
-                              TextButton(onPressed: (){},
+                              TextButton(onPressed: (){Get.to(statsScreen());},
                                   child: Text("View More >",style: TextStyle(
                                     decoration: TextDecoration.underline,
                                     color: Colors.black
@@ -253,7 +263,6 @@ class HomeScreenState extends State<HomeScreen>{
                            padding: EdgeInsets.only(left: 30.w,right: 20.w),
                            child: BarChartSample1(),
                          )
-                        //Navbar
                       ],
                     ),
                     ),
