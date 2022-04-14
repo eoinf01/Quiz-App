@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,13 +19,19 @@ class onboardController extends GetxController{
   double endWidth = 0.0;
   int totalPages = 2;
   bool showButton = false;
+  final List<double> initScore = [0.0,0.0,0.0,0.0,0.0];
 
   final box = GetStorage();
 
   @override
   void onInit() {
-    box.write("scores", [0.0,0.0,0.0,0.0,0.0]);
     box.write("fav", []);
+    HashMap<String,List<double>> scores = new HashMap();
+    scores.putIfAbsent("rapid", () => initScore);
+    scores.putIfAbsent("practice", () => initScore);
+    scores.putIfAbsent("marathon", () => initScore);
+    box.write("scores", scores);
+
     textController = TextEditingController();
     imageController = PageController(initialPage: 0,viewportFraction: 1);
     pageIndex = 0.obs;
