@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,8 +15,14 @@ class BarChartSample1 extends StatefulWidget {
 }
 
 class BarChartSample1State extends State<BarChartSample1> {
+
+  String dropdownValue = "test";
+
   final box = GetStorage();
   late List<double> data;
+  late List<double> practiceData;
+  late List<double> rapidData;
+  late List<double> marathonData;
   final Color barBackgroundColor = Color.fromRGBO(243, 242, 240, 1);
   final Duration animDuration = const Duration(milliseconds: 250);
 
@@ -23,9 +31,18 @@ class BarChartSample1State extends State<BarChartSample1> {
   @override
   void initState(){
     super.initState();
-    data = box.read("scores");
+    Map og = box.read("scores");
+    practiceData = og["practice"];
+    rapidData = og["rapid"];
+    marathonData = og["marathon"];
+    data = practiceData;
   }
 
+  Future<dynamic> refreshState() async {
+    setState(() {});
+    await Future<dynamic>.delayed(
+        animDuration + const Duration(milliseconds: 50));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +70,53 @@ class BarChartSample1State extends State<BarChartSample1> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Container(
-                    margin:EdgeInsets.only(top: 10,left: 10),
-                    child: Text(
-                      'Last Five Tests',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [Container(
+                      margin:EdgeInsets.only(top: 10,left: 10),
+                      child: Text(
+                        'Last Five Tests',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),DropdownButton<String>(
+                      value: dropdownValue,
+                      items: [DropdownMenuItem(value: "test",child: Text(
+                        'Practice test',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500),
+                      ),),DropdownMenuItem(value: "rapid",child: Text(
+                        'Rapid fire',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500),
+                      ),),DropdownMenuItem(value: "marathon",child: Text(
+                        'Marathon',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500),
+                      ),)],
+                      onChanged: (value) { setState(() {
+                        dropdownValue = value as String;
+                         if(dropdownValue=="test"){
+                           data = practiceData;
+                           refreshState();
+                         }
+                         else if(dropdownValue =="rapid"){
+                           data = rapidData;
+                           refreshState();
+                         }
+                         else if(dropdownValue =="marathon"){
+                           data = marathonData;
+                           refreshState();
+                         }
+                      }); },)],
                   )
                   ,
                   SizedBox(
@@ -70,7 +125,8 @@ class BarChartSample1State extends State<BarChartSample1> {
                   Expanded(
                     child: Padding(
                       padding:  EdgeInsets.only(right: 8.0.w),
-                      child: BarChart(
+                      child:
+                      BarChart(
                         mainBarData(),
                         swapAnimationDuration: animDuration,
                       ),
