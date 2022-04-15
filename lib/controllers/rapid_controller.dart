@@ -1,107 +1,69 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:theorytest/controllers/quiz_controller.dart';
 import 'package:theorytest/models/question.dart';
-import 'package:theorytest/views/quiz/components/score_screen.dart';
+import 'package:theorytest/views/quizzes/components/score_screen.dart';
 
-class rapidQuestionController extends GetxController with GetSingleTickerProviderStateMixin{
-  final RxInt questionID = 1.obs;
-  final RxBool isSelected = false.obs;
-  late RxInt questionsAnswered = 0.obs;
-  late RxInt answeredCorrectly = 0.obs;
-  RxList<Question> questions = sample_date;
-  List<Option> options = List.generate(41, (index) => Option(false, 0, 0));
-  final int questions_length = 40;
+class rapidQuestionController extends QuizController{
 
-  final box = GetStorage();
+  late bool updateComplete = false;
 
-  late PageController pageController;
+  @override
+  Rx<Duration> time = Duration(seconds: 15).obs;
 
-  late AnimationController _animationController;
-  late Animation<int> _animation;
-  final Rx<Duration> time = Duration(seconds: 31).obs;
-
-  Animation<int> get getAnimation =>  this._animation;
-
-  Rx<Duration> get getMinutes => this.time;
-
-  RxInt get getQuestionID => this.questionID;
   @override
   void onInit() {
     super.onInit();
     pageController = PageController();
 
-    _animationController = AnimationController(vsync: this,duration: Duration(seconds: 31));
+    animationController = AnimationController(vsync: this,duration: Duration(seconds: 15));
 
-    _animation = StepTween(begin: 31,end: 0).animate(_animationController)..addListener(() {
-      if(_animation.value == 0){
-        Get.off(()=> ScoreScreen(result: answeredCorrectly.value));
+    animation = IntTween(begin: 15,end: 0).animate(animationController)..addListener(() {
+      if(animation.value == 0){
+        if(!updateComplete){
+          endQuiz();
+        }
       }
-      time.value = Duration(seconds: _animation.value);
+      time.value = Duration(seconds: animation.value);
     });
 
-    _animationController.forward();
+    animationController.forward();
   }
+
   @override
-  void onClose() {
-    pageController.dispose();
-    _animationController.dispose();
-    super.onClose();
-  }
-
-
   void checkAnswer(Question question,int index){
-    options[question.id].isAnswered = true;
-    options[question.id].correctAns = question.answers;
-    options[question.id].selectedAns = index;
+    options[question.id].isAnswered.value = true;
+    options[question.id].correctAns.value = question.answers;
+    options[question.id].selectedAns.value = index;
     questionsAnswered += 1;
 
     if(question.answers == index){
       answeredCorrectly.value++;
+      animationController.reset();
+      animationController.forward();
     }
     if(questionsAnswered == 40){
-      List og = box.read("scores");
-      og.removeAt(0);
-      og.add(answeredCorrectly.value.toDouble());
-      box.write("scores", og);
-      Get.off(()=>ScoreScreen(result: answeredCorrectly.value,));
+      endQuiz();
     }
     else{
       nextQuestion();
     }
   }
 
-  void nextQuestion() {
-    print(questions_length);
-    if (questionID != questions_length) {
-      _animationController.reset();
-      _animationController.forward();
-      pageController.nextPage(
-          duration: Duration(milliseconds: 250),
-          curve: Curves.ease);
-    }
-    else{
-      pageController.animateToPage(0, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
-    }
+  @override
+  void endQuiz(){
+    Map og = box.read("scores");
+    List<double> list = new List.from(og["rapid"]);
+
+    list.removeAt(0);
+    list.add(answeredCorrectly.value.toDouble());
+
+    og.update("rapid", (value) => list);
+    box.write("scores", og);
+    updateComplete = true;
+
+    Get.off(()=>ScoreScreen(result: answeredCorrectly.value));
   }
 
-  void updateTheQnNum(int index) {
-    questionID.value = index;
-  }
-
-  void setLikeButtonBool(){
-    if(questions[questionID.value-1].isLiked == false){
-
-      questions[questionID.value-1].isLiked.value = true;
-      List<dynamic> og = box.read("fav");
-      og.add(questions[questionID.value-1].id);
-      box.write("fav", og);
-    }
-    else{
-      questions[questionID.value-1].isLiked.value = false;
-      List<dynamic> og = box.read("fav");
-      og.removeWhere((element) => element == questions[questionID.value-1].id);
-      box.write("favourite", og);
-    }
-  }
 }
