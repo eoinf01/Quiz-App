@@ -5,10 +5,12 @@ class modeModel{
   late String name;
   late String subtext;
   late AssetImage image;
-  modeModel(Color color,String heading,String subtext,image){
+  late StatelessWidget widget;
+  modeModel(Color color,String heading,String subtext,image,widget){
     this.color = color;
     this.name = heading;
     this.image = image;
     this.subtext = subtext;
+    this.widget = widget;
   }
 }

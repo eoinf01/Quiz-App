@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:theorytest/models/mode_model.dart';
 import 'package:theorytest/views/dashboard/screens/modes/widgets/mode_container.dart';
 
+import '../../../../constants/constants.dart';
+
 class modeScreen extends StatelessWidget{
-  List<modeModel> models = [modeModel(Colors.white, "Rapidfire", "You only have 30 seconds to answer the questions!", AssetImage("assets/alarm.png")),modeModel(Colors.white, "Marathon", "Answer as many questions you can correctly in a row!", AssetImage("assets/alarm.png"))];
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class modeScreen extends StatelessWidget{
                                       itemCount: models.length,
                                       shrinkWrap: true,
                                       itemBuilder: (BuildContext context, int index) {
-                                        return ModeContainer(models[index].name, models[index].subtext, models[index].image,index);
+                                        return ModeContainer(models[index]);
                                       },
                                     )
                                   ],
