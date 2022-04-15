@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../views/quiz/quiz.dart';
+import '../views/quizzes/quiz.dart';
 
 class practiceModal extends StatelessWidget {
   const practiceModal({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class practiceModal extends StatelessWidget {
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             )
                         ), onPressed: () {
-                      Get.off(()=> questionScreen());
+                      Get.offAll(()=> questionScreen(),transition: Transition.cupertino);
                     },
                         child: Padding(
                           padding: EdgeInsets.all(5),

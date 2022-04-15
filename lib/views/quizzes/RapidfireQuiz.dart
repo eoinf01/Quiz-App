@@ -7,7 +7,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/rapid_controller.dart';
 import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/dashboard/dashboard.dart';
-import 'package:theorytest/views/RapidfireQuiz/components/question_card.dart';
+import 'package:theorytest/views/quizzes/components/question_card.dart';
+
+import '../../models/question.dart';
 
 class rapidQuizScreen extends StatelessWidget {
   @override
@@ -43,7 +45,7 @@ class rapidQuizScreen extends StatelessWidget {
                       builder: (BuildContext context) {
                         return CupertinoAlertDialog(
                           title: Text(
-                              "Are you sure you want to quit this quiz?"),
+                              "Are you sure you want to quit this quizzes?"),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
@@ -171,7 +173,7 @@ class rapidQuizScreen extends StatelessWidget {
                               onPageChanged: (index) =>
                                   _controller.updateTheQnNum(index%40 + 1),
                               itemBuilder: (context, index) {
-                                return rapidQuestionCard(question: sample_date[index % 40]);
+                                return questionCard(question: sample_date[index % 40],controller: Get.find<rapidQuestionController>());
                               },
                             ),)
                         ])

@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:theorytest/controllers/score_controller.dart';
-import 'package:theorytest/views/quiz/quiz.dart';
 
 import '../../dashboard/dashboard.dart';
 
@@ -106,7 +105,6 @@ class ScoreScreen extends StatelessWidget{
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(width: 15,),
                                 Text("${((_scoreController.time.value / 40)* 100).round()}",
                                   style: GoogleFonts.lato(
                                       fontWeight: FontWeight.bold,
@@ -179,7 +177,7 @@ class ScoreScreen extends StatelessWidget{
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(CupertinoIcons.arrow_counterclockwise,color: Colors.white,),
-                                TextButton(onPressed: ()=> Get.off(()=>questionScreen()),
+                                TextButton(onPressed: ()=> Get.off(()=>MyDashBoard()),
                                   child: Text("Start Again?",
                                     style: TextStyle(
                                         fontSize: 16.sp,

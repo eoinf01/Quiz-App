@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,8 +16,7 @@ class incorrectQuestionsWidget extends StatelessWidget{
     return Expanded(
       flex: 1,
       child: Container(
-          height: 170,
-          margin: EdgeInsets.only(left: 20),
+
           padding: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -43,15 +41,13 @@ class incorrectQuestionsWidget extends StatelessWidget{
                 //     color: Colors.grey.shade200,
                 //     borderRadius: BorderRadius.all(Radius.circular(20))
                 // ),
-                child: Obx(()=>AutoSizeText(
+                child: Obx(()=>Text(
                   '${controller.incorrectQuestions.value}',
                   style: TextStyle(fontSize: 80,color: Colors.black),
                   maxLines: 1,
-                  maxFontSize: 80,
                 )),),
              Container(
-                margin: EdgeInsets.only(top: 15.h),
-                child: AutoSizeText("Incorrect Answers",textAlign: TextAlign.center,style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold),maxFontSize: 14,minFontSize: 8,),
+                child: Text("Incorrect Answers",textAlign: TextAlign.center,style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold),maxLines: 1,),
               )
             ],
           )

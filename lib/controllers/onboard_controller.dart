@@ -31,6 +31,7 @@ class onboardController extends GetxController{
     scores.putIfAbsent("practice", () => initScore);
     scores.putIfAbsent("marathon", () => initScore);
     box.write("scores", scores);
+    box.write("incorrect", 0);
 
     textController = TextEditingController();
     imageController = PageController(initialPage: 0,viewportFraction: 1);

@@ -4,21 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:theorytest/models/mode_model.dart';
-import 'package:theorytest/views/dashboard/screens/home/components/barchart.dart';
+import 'package:theorytest/views/statistics/components/barchart.dart';
 import 'package:theorytest/views/statistics/components/correct_widget.dart';
 
 import 'components/incorrect_widget.dart';
 
 class statsScreen extends StatelessWidget {
-  List<modeModel> models = [
-    modeModel(Colors.white, "Rapidfire",
-        "You only have 30 seconds to answer the questions!",
-        AssetImage("assets/bang.png")),
-    modeModel(Colors.white, "Marathon",
-        "Answer as many questions you can correctly in a row!",
-        AssetImage("assets/bell.png"))
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +63,18 @@ class statsScreen extends StatelessWidget {
                             SizedBox(height: 15.h,),
                             Container(
                                   width: 1.sw,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      correctQuestionsWidget(),
-                                      incorrectQuestionsWidget(),
-                                    ],
-                                  ),
+                                  height: 170.h,
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        correctQuestionsWidget(),
+                                        SizedBox(width: 20,),
+                                        incorrectQuestionsWidget(),
+                                      ],
+                                    ),
+                                  )
                                 )
                           ],
 

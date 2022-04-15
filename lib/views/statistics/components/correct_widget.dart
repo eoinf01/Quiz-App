@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +22,6 @@ class correctQuestionsWidget extends StatelessWidget{
       Expanded(
         flex: 1,
         child: Container(
-          height: 170,
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -59,7 +57,7 @@ class correctQuestionsWidget extends StatelessWidget{
                   ),),
               ),
              Container(
-                child: AutoSizeText("0/1 Questions Correct",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold,fontSize: 14),maxFontSize: 12,),
+                child: Text("0/1 Questions Correct",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold,fontSize: 14),),
               )
             ],
           ),

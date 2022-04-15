@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:theorytest/controllers/question_controller.dart';
+import 'package:theorytest/controllers/quiz_controller.dart';
 import 'package:theorytest/modals/HintModal.dart';
 import 'package:theorytest/models/question.dart';
 
@@ -14,15 +14,15 @@ class questionCard extends StatelessWidget {
   const questionCard({
     Key? key,
     // it means we have to pass this
-    required this.question,
+    required this.question, required this.controller,
   }) : super(key: key);
 
   final Question question;
+  final QuizController controller;
 
 
   @override
   Widget build(BuildContext context) {
-    QuestionController _controller = Get.find<QuestionController>();
     return Column(
       children: [
     Container(
@@ -45,7 +45,8 @@ class questionCard extends StatelessWidget {
               question: question            ,
               index: index,
               text: question.options[index],
-              press: () => _controller.checkAnswer(question, index),
+              press: () => controller.checkAnswer(question, index),
+              controller: controller,
             ),
           ),
           SizedBox(height: 10,),
@@ -91,78 +92,79 @@ class Option extends StatelessWidget{
     required this.question,
     required this.text,
     required this.index,
-    required this.press,
+    required this.press, required this.controller,
   }) : super(key: key);
   final String text;
   final int index;
   final VoidCallback press;
   final Question question;
+  final QuizController controller;
+
 
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<QuestionController>(
-        builder: (qnController) {
-          Color getTheRightColor() {
-            if (qnController.options[question.id].isAnswered) {
-              if (index == qnController.options[question.id].correctAns) {
-                return Colors.green;
-              } else if (index == qnController.options[question.id].selectedAns &&
-                  qnController.options[question.id].selectedAns != qnController.options[question.id].correctAns) {
-                return Colors.red;
-              }
+
+    Color getTheRightColor() {
+      if (controller.options[question.id].isAnswered.value) {
+        if (index == controller.options[question.id].correctAns.value) {
+          return Colors.green;
+        } else if (index == controller.options[question.id].selectedAns.value &&
+            controller.options[question.id].selectedAns.value != controller.options[question.id].correctAns.value) {
+          return Colors.red;
+        }
+      }
+      return Colors.grey;
+    }
+
+    IconData getTheRightIcon() {
+      return getTheRightColor() == Colors.red ? Icons.close : Icons.done;
+    }
+
+    return Obx(()=>
+        InkWell(
+          onTap: () =>
+          {
+            if(!controller.options[question.id].isAnswered.value){
+              controller.checkAnswer(question, index),
             }
-            return Colors.grey;
-          }
-
-          IconData getTheRightIcon() {
-            return getTheRightColor() == Colors.red ? Icons.close : Icons.done;
-          }
-
-          return InkWell(
-            onTap: () =>
-            {
-              if(!qnController.options[question.id].isAnswered){
-                qnController.checkAnswer(question, index),
-              }
           },
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 4),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 4),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
               border: Border.all(color: getTheRightColor()),
               borderRadius: BorderRadius.circular(15),
-              ),
-              child: 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(child: Text(
-                        "$text",
-                        style: GoogleFonts.lato(
-                            color: getTheRightColor()
-                        )
-                    ),),
-
-                    Container(
-                      height: 26,
-                      width: 26,
-                      decoration: BoxDecoration(
-                      color:
-                       getTheRightColor() == Colors.grey
-                                    ? Colors.transparent
-                                    : getTheRightColor(),
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(color: getTheRightColor()),
-                              ),
-                              child: getTheRightColor() == Colors.grey
-                                  ? null
-                                  : Icon(getTheRightIcon(), size: 16),
-                          )
-                    ],
-                  ),
             ),
-          );
-        });
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(child: Text(
+                    "$text",
+                    style: GoogleFonts.lato(
+                        color: getTheRightColor()
+                    )
+                ),),
+
+                Container(
+                  height: 26,
+                  width: 26,
+                  decoration: BoxDecoration(
+                    color:
+                    getTheRightColor() == Colors.grey
+                        ? Colors.transparent
+                        : getTheRightColor(),
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: getTheRightColor()),
+                  ),
+                  child: getTheRightColor() == Colors.grey
+                      ? null
+                      : Icon(getTheRightIcon(), size: 16),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

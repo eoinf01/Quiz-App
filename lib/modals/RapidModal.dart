@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:theorytest/views/quizzes/RapidfireQuiz.dart';
 
-import '../views/quiz/quiz.dart';
 
 class rapidModal extends StatelessWidget {
   const rapidModal({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class rapidModal extends StatelessWidget {
                                 borderRadius: BorderRadius.all(Radius.circular(15)),
                               )
                           ), onPressed: () {
-                        Get.off(()=> questionScreen());
+                        Get.offAll(()=> rapidQuizScreen());
                       },
                           child: Padding(
                             padding: EdgeInsets.all(5),

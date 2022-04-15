@@ -16,6 +16,8 @@ class statsController extends GetxController with GetSingleTickerProviderStateMi
   @override
   void onInit() {
     super.onInit();
+    incorrectQuestions.value = box.read("incorrect");
+
     _animationController = AnimationController(vsync: this,duration: Duration(seconds: 1));
     _animation = IntTween(
         begin: 0,end: correctQuestions

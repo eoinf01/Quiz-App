@@ -9,9 +9,9 @@ class Question{
 }
 
 class Option{
-  late bool isAnswered = false;
-  late int correctAns;
-  late int selectedAns;
+  late RxBool isAnswered = false.obs;
+  late RxInt correctAns;
+  late RxInt selectedAns;
   Option(this.isAnswered,this.correctAns,this.selectedAns);
 }
 

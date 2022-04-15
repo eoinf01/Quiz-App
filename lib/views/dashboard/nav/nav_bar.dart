@@ -15,14 +15,14 @@ class NavBarV1 extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 60.h,
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.bottomCenter,
       decoration: BoxDecoration(
         boxShadow: [BoxShadow(
           color: Color.fromRGBO(220, 220, 220, 1),
-          blurRadius: 20.0,
-          spreadRadius: 5.0
+          blurRadius: 20.0.r,
+          spreadRadius: 5.0.r
         )],
         borderRadius: BorderRadius.only(topLeft: Radius.circular(22),topRight: Radius.circular(22)),
         gradient: LinearGradient(
@@ -44,7 +44,7 @@ class NavBarV1 extends StatelessWidget{
                       border: Border(
                         top: BorderSide(
                           color: selectedIndex == 0 ? Colors.blue : Colors.white,
-                          width: 3.0
+                          width: 3.0.w
                         )
                       )
                     ),
@@ -67,7 +67,7 @@ class NavBarV1 extends StatelessWidget{
                               ],
                               )
                           )],
-                      ), padding: EdgeInsets.only(top: 2),
+                      ), padding: EdgeInsets.only(top: 2.h),
                       )
                   ),
                   AnimatedContainer(
@@ -75,7 +75,7 @@ class NavBarV1 extends StatelessWidget{
                           border: Border(
                               top: BorderSide(
                                   color: selectedIndex == 1 ? Colors.blue : Colors.white,
-                                  width: 3.0
+                                  width: 3.0.w
                               )
                           )
                       ),
@@ -97,14 +97,14 @@ class NavBarV1 extends StatelessWidget{
                                 ],
                                 )
                             )],
-                        ), padding: EdgeInsets.only(top: 2),
+                        ), padding: EdgeInsets.only(top: 2.h),
                       )
                   ),AnimatedContainer(
                       decoration: BoxDecoration(
                           border: Border(
                               top: BorderSide(
                                   color: selectedIndex == 2 ? Colors.blue : Colors.white,
-                                  width: 3.0
+                                  width: 3.0.w
                               )
                           )
                       ),
@@ -127,7 +127,7 @@ class NavBarV1 extends StatelessWidget{
                                 )
                             )
                             ],
-                        ), padding: EdgeInsets.only(top: 2),
+                        ), padding: EdgeInsets.only(top: 2.h),
                       )
                   ),
                 ],

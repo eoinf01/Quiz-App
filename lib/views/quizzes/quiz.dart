@@ -7,7 +7,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/question_controller.dart';
 import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/dashboard/dashboard.dart';
-import 'package:theorytest/views/quiz/components/question_card.dart';
+import 'package:theorytest/views/quizzes/components/question_card.dart';
 
 class questionScreen extends StatelessWidget {
   @override
@@ -43,7 +43,7 @@ class questionScreen extends StatelessWidget {
                       builder: (BuildContext context) {
                         return CupertinoAlertDialog(
                           title: Text(
-                              "Are you sure you want to quit this quiz?"),
+                              "Are you sure you want to quit this quizzes?"),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
@@ -170,7 +170,7 @@ class questionScreen extends StatelessWidget {
                           onPageChanged: (index) =>
                               _controller.updateTheQnNum(index%40 + 1),
                           itemBuilder: (context, index) {
-                            return questionCard(question: sample_date[index % 40]);
+                            return questionCard(question: sample_date[index % 40],controller: Get.find<QuestionController>());
                           },
                         ),)
                       ])
