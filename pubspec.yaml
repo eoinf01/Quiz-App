@@ -29,7 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences:
   get: 4.5.0
   get_storage:
   google_fonts: 2.2.0
@@ -39,7 +38,7 @@ dependencies:
   percent_indicator:
   fl_chart:
   flutter_svg:
-  firebase_core: ^1.13.1
+  firebase_core: ^1.14.0
   firebase_messaging: ^11.2.8
   flutter_local_notifications: ^9.4.0
   confetti:
