@@ -29,6 +29,19 @@ class statsScreen extends StatelessWidget {
         orientation: Orientation.portrait);
     return
       Scaffold(
+        extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            title:
+              Text("Statistics", style: GoogleFonts.roboto(
+              fontSize: 23.sp,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            )),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading:
+            IconButton(onPressed: ()=>{Get.back()}, icon: Icon(CupertinoIcons.arrow_left,),iconSize: 25,splashRadius: 20.0),foregroundColor: Colors.black,
+          ),
           backgroundColor: Color.fromRGBO(253, 253, 253, 1),
           body: Container(
               width: 1.sw,
@@ -45,20 +58,6 @@ class statsScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(onPressed: ()=>{Get.back()}, icon: Icon(CupertinoIcons.arrow_left,),iconSize: 25,splashRadius: 20.0),
-                                Text("Statistics", style: GoogleFonts.roboto(
-                                  fontSize: 23.sp,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ), textAlign: TextAlign.start,),
-                                SizedBox(width: 50,)
-                              ],
-                            ),
-                            SizedBox(height: 10.h,),
                             BarChartSample1(),
                             SizedBox(height: 15.h,),
                             Container(

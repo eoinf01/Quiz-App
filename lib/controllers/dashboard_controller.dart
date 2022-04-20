@@ -28,7 +28,6 @@ import 'package:get_storage/get_storage.dart';
      List<double> marathonScores = List.from(scores["marathon"]);
      rapidBestScore = rapidScores.reduce(max);
      marathonBestScore = marathonScores.reduce(max);
-
      scrollController = new ScrollController();
    }
 

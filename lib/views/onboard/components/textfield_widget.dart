@@ -60,7 +60,6 @@ class inputButtonState extends State<inputButton>{
                   prefixIcon: Icon(CupertinoIcons.profile_circled),
                   fillColor: Colors.white,
                   filled: true,
-                  labelText: "Profile name",
                   hintText:"Profile name",
                   errorText: validateText(widget.myController.text),
                   enabledBorder: OutlineInputBorder(

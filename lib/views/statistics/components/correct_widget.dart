@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 
 import 'package:theorytest/constants/constants.dart' as Constants;
+import 'package:theorytest/models/question.dart';
 
 import '../../../controllers/statistics_controller.dart';
 
@@ -43,7 +44,7 @@ class correctQuestionsWidget extends StatelessWidget{
                     animation: true,
                     animationDuration: 1000,
                     lineWidth: 10.0.w,
-                    percent: controller.correctQuestions/80,
+                    percent: controller.correctQuestions.value/sample_date.length,
                     reverse: false,
                     arcType: ArcType.FULL,
                     arcBackgroundColor: Color.fromRGBO(231,231,231,1),
@@ -57,7 +58,7 @@ class correctQuestionsWidget extends StatelessWidget{
                   ),),
               ),
              Container(
-                child: Text("0/1 Questions Correct",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold,fontSize: 14),),
+                child: Text("${controller.correctQuestions.value}/${sample_date.length} Questions Correct",style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold,fontSize: 14),),
               )
             ],
           ),

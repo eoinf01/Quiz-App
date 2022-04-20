@@ -11,5 +11,6 @@ import '../models/mode_model.dart';
   const Color blueCard = Color.fromRGBO(52, 152, 219,1);
   final Color lightblueCard = Color.fromRGBO(133, 193, 233, 1);
   final Color primaryBlue = Color.fromRGBO(0, 114, 255, 1);
+  final Color darkBlue = Color.fromRGBO(21,53,247, 1);
 
 List<modeModel> models = [modeModel(Colors.white, "Rapidfire", "You only have 30 seconds to answer the questions!", AssetImage("assets/bang.png"),rapidModal()),modeModel(Colors.white, "Marathon", "Answer as many questions you can correctly in a row!", AssetImage("assets/bell.png"),marathonModal())];
