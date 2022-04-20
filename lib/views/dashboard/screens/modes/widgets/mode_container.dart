@@ -105,7 +105,7 @@ class ModeContainer extends StatelessWidget{
                           )),
 
                         if(model.name == "Marathon")
-                          Text(controller.getMarathonBest > 0 ? "Best Score: ${controller.getRapidBest.toInt()}" : "You have not tried this mode yet!",style: GoogleFonts.roboto(
+                          Text(controller.getMarathonBest > 0 ? "Best Score: ${controller.getMarathonBest.toInt()}" : "You have not tried this mode yet!",style: GoogleFonts.roboto(
                             color: Colors.white,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
