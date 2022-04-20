@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/question_controller.dart';
-import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/dashboard/dashboard.dart';
 import 'package:theorytest/views/quizzes/components/question_card.dart';
 
@@ -43,13 +42,13 @@ class questionScreen extends StatelessWidget {
                       builder: (BuildContext context) {
                         return CupertinoAlertDialog(
                           title: Text(
-                              "Are you sure you want to quit this quizzes?"),
+                              "Are you sure you want to quit this quiz?"),
+                          content: Text("You will lose any progress made."),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                Get.off(()=>MyDashBoard());
-                                Get.delete<QuestionController>();
+                                Get.offAll(()=>MyDashBoard());
                               },
                             ), TextButton(
                               child: const Text('No'),
@@ -170,7 +169,7 @@ class questionScreen extends StatelessWidget {
                           onPageChanged: (index) =>
                               _controller.updateTheQnNum(index%40 + 1),
                           itemBuilder: (context, index) {
-                            return questionCard(question: sample_date[index % 40],controller: Get.find<QuestionController>());
+                            return questionCard(question: _controller.questions[index % 40],controller: Get.find<QuestionController>());
                           },
                         ),)
                       ])

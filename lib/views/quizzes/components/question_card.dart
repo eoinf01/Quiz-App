@@ -31,13 +31,13 @@ class questionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "Q${question.id}. ${question.question}?",
-              style: GoogleFonts.lato(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.sp
-              ),
+          Obx(()=>Text(
+            "Q${controller.getQuestionID.value}. ${question.question}?",
+            style: GoogleFonts.lato(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.sp
             ),
+          ),),
           SizedBox(height: 10),
           ...List.generate(
             question.options.length,
@@ -106,11 +106,11 @@ class Option extends StatelessWidget{
   Widget build(BuildContext context) {
 
     Color getTheRightColor() {
-      if (controller.options[question.id].isAnswered.value) {
-        if (index == controller.options[question.id].correctAns.value) {
+      if (controller.options[controller.getQuestionID.value].isAnswered.value) {
+        if (index == controller.options[controller.getQuestionID.value].correctAns.value) {
           return Colors.green;
-        } else if (index == controller.options[question.id].selectedAns.value &&
-            controller.options[question.id].selectedAns.value != controller.options[question.id].correctAns.value) {
+        } else if (index == controller.options[controller.getQuestionID.value].selectedAns.value &&
+            controller.options[controller.getQuestionID.value].selectedAns.value != controller.options[controller.getQuestionID.value].correctAns.value) {
           return Colors.red;
         }
       }
@@ -125,7 +125,7 @@ class Option extends StatelessWidget{
         InkWell(
           onTap: () =>
           {
-            if(!controller.options[question.id].isAnswered.value){
+            if(!controller.options[controller.getQuestionID.value].isAnswered.value){
               controller.checkAnswer(question, index),
             }
           },

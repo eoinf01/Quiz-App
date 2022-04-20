@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:theorytest/controllers/quiz_controller.dart';
@@ -16,6 +18,14 @@ class rapidQuestionController extends QuizController{
   void onInit() {
     super.onInit();
     pageController = PageController();
+    Random random = new Random();
+    questions = new RxList<Question>();
+    while(questions.length < 40){
+      int randomIndex = random.nextInt(sample_date.length);
+      if(!questions.contains(sample_date[randomIndex])){
+        questions.add(sample_date[randomIndex]);
+      }
+    }
 
     animationController = AnimationController(vsync: this,duration: Duration(seconds: 15));
 

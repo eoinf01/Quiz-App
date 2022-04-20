@@ -45,13 +45,13 @@ class rapidQuizScreen extends StatelessWidget {
                       builder: (BuildContext context) {
                         return CupertinoAlertDialog(
                           title: Text(
-                              "Are you sure you want to quit this quizzes?"),
+                              "Are you sure you want to quit this quiz?"),
+                          content: Text("You will lose any progress made."),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                Get.off(()=>MyDashBoard());
-                                Get.delete<rapidQuestionController>();
+                                Get.offAll(()=>MyDashBoard());
                               },
                             ), TextButton(
                               child: const Text('No'),

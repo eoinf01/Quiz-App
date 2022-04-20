@@ -9,7 +9,7 @@ abstract class QuizController extends GetxController with GetSingleTickerProvide
   final RxBool isSelected = false.obs;
   late RxInt questionsAnswered = 0.obs;
   late RxInt answeredCorrectly = 0.obs;
-  RxList<Question> questions = sample_date;
+  late RxList<Question> questions;
   List<Option> options = List.generate(41, (index) => Option(false.obs, 0.obs, 0.obs));
   final int questions_length = 40;
 
