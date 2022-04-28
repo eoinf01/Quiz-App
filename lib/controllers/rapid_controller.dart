@@ -1,10 +1,12 @@
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:theorytest/controllers/quiz_controller.dart';
 import 'package:theorytest/models/question.dart';
+import 'package:theorytest/views/dashboard/dashboard.dart';
 import 'package:theorytest/views/quizzes/components/score_screen.dart';
 
 class rapidQuestionController extends QuizController{
@@ -18,12 +20,17 @@ class rapidQuestionController extends QuizController{
   void onInit() {
     super.onInit();
     pageController = PageController();
+    options =  List.generate(41, (index) => Option(false.obs, 0.obs, 0.obs));
     Random random = new Random();
+    allQuestions = [];
+    jsonDecode(box.read("questions")).forEach((element)=>{
+      allQuestions.add(Question.fromJson(element))
+    });
     questions = new RxList<Question>();
     while(questions.length < 40){
-      int randomIndex = random.nextInt(sample_date.length);
-      if(!questions.contains(sample_date[randomIndex])){
-        questions.add(sample_date[randomIndex]);
+      int randomIndex = random.nextInt(allQuestions.length);
+      if(!questions.contains(allQuestions[randomIndex])){
+        questions.add(allQuestions[randomIndex]);
       }
     }
 
@@ -32,7 +39,7 @@ class rapidQuestionController extends QuizController{
     animation = IntTween(begin: 15,end: 0).animate(animationController)..addListener(() {
       if(animation.value == 0){
         if(!updateComplete){
-          endQuiz();
+          endQuiz(false);
         }
       }
       time.value = Duration(seconds: animation.value);
@@ -43,18 +50,23 @@ class rapidQuestionController extends QuizController{
 
   @override
   void checkAnswer(Question question,int index){
-    options[question.id].isAnswered.value = true;
-    options[question.id].correctAns.value = question.answers;
-    options[question.id].selectedAns.value = index;
+    options[questionID.value].isAnswered.value = true;
+    options[questionID.value].correctAns.value = question.answers;
+    options[questionID.value].selectedAns.value = index;
     questionsAnswered += 1;
 
     if(question.answers == index){
       answeredCorrectly.value++;
+      question.isCorrect.value = true;
       animationController.reset();
       animationController.forward();
     }
+    else{
+      int incorrect = box.read("incorrect");
+      box.write("incorrect", ++incorrect);
+    }
     if(questionsAnswered == 40){
-      endQuiz();
+      endQuiz(false);
     }
     else{
       nextQuestion();
@@ -62,7 +74,7 @@ class rapidQuestionController extends QuizController{
   }
 
   @override
-  void endQuiz(){
+  void endQuiz(bool quit){
     Map og = box.read("scores");
     List<double> list = new List.from(og["rapid"]);
 
@@ -72,8 +84,13 @@ class rapidQuestionController extends QuizController{
     og.update("rapid", (value) => list);
     box.write("scores", og);
     updateComplete = true;
-
-    Get.off(()=>ScoreScreen(result: answeredCorrectly.value));
+    box.write("questions",jsonEncode(allQuestions));
+    if(quit){
+      Get.off(()=>MyDashBoard());
+    }
+    else{
+      Get.off(()=>ScoreScreen(result: answeredCorrectly.value,questions: questions,));
+    }
   }
 
 }

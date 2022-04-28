@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -6,18 +7,25 @@ import 'package:theorytest/controllers/quiz_controller.dart';
 import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/quizzes/components/score_screen.dart';
 
+import '../views/dashboard/dashboard.dart';
+
 class MarathonController extends QuizController{
 
   @override
   void onInit() {
     super.onInit();
+    options = List.generate(41, (index) => Option(false.obs, 0.obs, 0.obs));
     pageController = PageController();
     Random random = new Random();
-    questions = new RxList<Question>();
+    allQuestions = [];
+    jsonDecode(box.read("questions")).forEach((element)=>{
+      allQuestions.add(Question.fromJson(element))
+    });
+    questions =[];
     while(questions.length < 40){
-      int randomIndex = random.nextInt(sample_date.length);
-      if(!questions.contains(sample_date[randomIndex])){
-        questions.add(sample_date[randomIndex]);
+      int randomIndex = random.nextInt(allQuestions.length);
+      if(!questions.contains(allQuestions[randomIndex])){
+        questions.add(allQuestions[randomIndex]);
       }
     }
 
@@ -31,19 +39,22 @@ class MarathonController extends QuizController{
 
   @override
   void checkAnswer(Question question,int index){
-    options[question.id].isAnswered.value = true;
-    options[question.id].correctAns.value = question.answers;
-    options[question.id].selectedAns.value = index;
+    options[questionID.value].isAnswered.value = true;
+    options[questionID.value].correctAns.value = question.answers;
+    options[questionID.value].selectedAns.value = index;
     questionsAnswered += 1;
 
     if(question.answers == index){
+      question.isCorrect.value = true;
       answeredCorrectly.value++;
     }
     else{
-      endQuiz();
+      int incorrect = box.read("incorrect");
+      box.write("incorrect", ++incorrect);
+      endQuiz(false);
     }
     if(questionsAnswered == 40){
-      endQuiz();
+      endQuiz(false);
     }
     else{
       nextQuestion();
@@ -51,14 +62,19 @@ class MarathonController extends QuizController{
   }
 
   @override
-  void endQuiz(){
+  void endQuiz(bool quit){
     Map og = box.read("scores");
     List<double> marathon = List.from(og["marathon"]);
     marathon.removeAt(0);
     marathon.add(answeredCorrectly.value.toDouble());
     og.update("marathon", (value) => marathon);
     box.write("scores", og);
-
-    Get.off(()=>ScoreScreen(result: answeredCorrectly.value,));
+    box.write("questions",jsonEncode(allQuestions));
+    if(quit){
+      Get.offAll(()=>MyDashBoard());
+    }
+    else{
+      Get.off(()=>ScoreScreen(result: answeredCorrectly.value,questions: questions,));
+    }
   }
 }

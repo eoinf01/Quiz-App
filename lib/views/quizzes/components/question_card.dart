@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:theorytest/controllers/quiz_controller.dart';
-import 'package:theorytest/modals/HintModal.dart';
 import 'package:theorytest/models/question.dart';
 
 import '../../../modals/FloatingHintModal.dart';
+import '../../../modals/HintModal.dart';
 
 
 class questionCard extends StatelessWidget {
@@ -25,62 +25,68 @@ class questionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-    Container(
-      width: 0.9.sw,
-      padding: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Obx(()=>Text(
-            "Q${controller.getQuestionID.value}. ${question.question}?",
-            style: GoogleFonts.lato(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.sp
-            ),
-          ),),
-          SizedBox(height: 10),
-          ...List.generate(
-            question.options.length,
-            (index) => Option(
-              question: question            ,
-              index: index,
-              text: question.options[index],
-              press: () => controller.checkAnswer(question, index),
-              controller: controller,
-            ),
-          ),
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 70,
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.purple.shade100,
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-                child:
-                    GestureDetector(
-                      onTap: ()=>{showFloatingModalBottomSheet(
-                        context: context,
-                        builder: (context) => HintModal(hintText: "Default Hint ",),
-                      )},
-                      child:
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.lightbulb,color: Colors.purple,),
-                              Text("Hint",style: GoogleFonts.lato(
-                                  color: Colors.purple
+        Expanded(
+          child: Container(
+              width: 0.9.sw,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(()=>Text(
+                    "Q${controller.getQuestionID.value}. ${question.question}?",
+                    style: GoogleFonts.lato(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp
+                    ),
+                  ),),
+                  question.image != null ? Image(
+                    image: AssetImage(question.image!),
+                  ) : SizedBox.shrink(),
+                  SizedBox(height: 10),
+                  ...List.generate(
+                    question.options.length,
+                        (index) => Option(
+                      question: question            ,
+                      index: index,
+                      text: question.options[index],
+                      press: () => controller.checkAnswer(question, index),
+                      controller: controller,
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                            width: 70,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.purple.shade100,
+                                borderRadius: BorderRadius.all(Radius.circular(20))
+                            ),
+                            child:
+                            GestureDetector(
+                              onTap: ()=>{showFloatingModalBottomSheet(
+                                context: context,
+                                builder: (context) => HintModal(hintText: "Default Hint ",),
+                              )},
+                              child:
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.lightbulb,color: Colors.purple,),
+                                  Text("Hint",style: GoogleFonts.lato(
+                                      color: Colors.purple
+                                  ),)
+                                ],
                               ),)
-                            ],
-                          ),)
-                    )
-              ])
-            ],
-          )
-    )],
+                        )
+                      ])
+                ],
+              )
+          ),
+        )
+    ],
       );
   }
 

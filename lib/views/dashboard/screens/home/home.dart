@@ -219,10 +219,10 @@ class HomeScreenState extends State<HomeScreen>{
                           )
                         ),
                       Container(
-                        height: 120,
+                        height: 120.h,
                         child: ListView.separated(
                           clipBehavior: Clip.none,
-                          physics: SnappingListScrollPhysics(itemExtent: 220),
+                          physics: SnappingListScrollPhysics(itemExtent: 220.w),
                           padding: EdgeInsets.only(left: 30.w,top: 5.h,bottom: 5.h),
                           controller: controller.scrollController,
                           scrollDirection: Axis.horizontal,

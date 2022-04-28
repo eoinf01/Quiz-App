@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:theorytest/views/dashboard/nav/nav_bar.dart';
 import 'package:theorytest/views/dashboard/screens/home/home.dart';
 import 'package:theorytest/views/dashboard/screens/modes/modes.dart';
-import 'package:theorytest/views/dashboard/screens/settings.dart';
+import 'package:theorytest/views/dashboard/screens/settings/settings.dart';
 
 import '../../main.dart';
 

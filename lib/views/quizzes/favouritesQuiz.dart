@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:theorytest/controllers/favourites_controller.dart';
+import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/dashboard/dashboard.dart';
 import 'package:theorytest/views/quizzes/components/question_card.dart';
 
-import '../../controllers/marathon_controller.dart';
-
-class marathonQuiz extends StatelessWidget {
+class favouritesQuiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -26,7 +26,7 @@ class marathonQuiz extends StatelessWidget {
         context: context,
         minTextAdapt: false,
         orientation: Orientation.portrait);
-    MarathonController _controller = Get.put(MarathonController());
+    favouritesController _controller = Get.put(favouritesController());
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -44,7 +44,7 @@ class marathonQuiz extends StatelessWidget {
                         return CupertinoAlertDialog(
                           title: Text(
                               "Are you sure you want to quit this quiz?"),
-                          content: Text("You will lose any progress made."),
+                          content: Text("You Will lose any progress made."),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
@@ -64,7 +64,7 @@ class marathonQuiz extends StatelessWidget {
                 Icons.arrow_back_ios_new_sharp, color: Colors.white,),
               iconSize: 16,),
             SizedBox(width: 65,),
-            Text("Marathon Quiz",style: GoogleFonts.poppins(
+            Text("Favourites Test",style: GoogleFonts.poppins(
 
             ),),
           ],
@@ -95,6 +95,28 @@ class marathonQuiz extends StatelessWidget {
                               ),
                             ))
                           ]
+                      ),
+                      Container(
+                          width: 106.w,
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(20)),
+                              color: Colors.orange.withOpacity(0.1)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment
+                                .center,
+                            children: [
+                              Icon(
+                                Icons.timer,
+                                color: Colors.orangeAccent,),
+                              Obx(()=> Text("${_controller.getMinutes.value.inMinutes}min ${_controller.getMinutes.value.inSeconds.remainder(60)}s",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.orange
+                                  ))),
+                            ],
+                          )
                       ),
                     ],
                   ),
@@ -145,9 +167,9 @@ class marathonQuiz extends StatelessWidget {
                             child: PageView.builder(
                               controller: _controller.pageController,
                               onPageChanged: (index) =>
-                                  _controller.updateTheQnNum(index%40 + 1),
+                                  _controller.updateTheQnNum(index%_controller.questions.length + 1),
                               itemBuilder: (context, index) {
-                                return questionCard(question: _controller.questions[index % 40],controller: Get.find<MarathonController>(),);
+                                return questionCard(question: sample_date[index % _controller.questions.length],controller: Get.find<favouritesController>(),);
                               },
                             ),)
                         ])
@@ -157,18 +179,24 @@ class marathonQuiz extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Stack(
-                        children: [
-                          GestureDetector(
-                              onTap: _controller.setLikeButtonBool,
-                              child: Obx(()=>
-                                  AnimatedContainer(duration: Duration(milliseconds: 2000),
-                                    curve: Curves.easeIn,
-                                    child:                             Icon(Icons.favorite,color: _controller.questions[_controller.questionID.value-1].isLiked.value ? Colors.red : Colors.grey,size: 33,),)
-                                ,)
-                          )
-                        ],
-                      ),
+                      SizedBox(width: 50,),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Colors.blueAccent
+                                ],
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          child: TextButton(onPressed: ()=>{_controller.nextQuestion()}, child: Text("Next",style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 17.sp
+                          ),)),
+                        ),
+                      )
                     ],
                   ),
                 )

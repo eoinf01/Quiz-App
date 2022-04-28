@@ -1,8 +1,10 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:theorytest/models/question.dart';
 
 class onboardController extends GetxController{
 
@@ -32,7 +34,7 @@ class onboardController extends GetxController{
     scores.putIfAbsent("marathon", () => initScore);
     box.write("scores", scores);
     box.write("incorrect", 0);
-    box.write("correct", 0);
+    box.write("questions", jsonEncode(sample_date));
 
     textController = TextEditingController();
     imageController = PageController(initialPage: 0,viewportFraction: 1);

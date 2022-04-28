@@ -9,9 +9,9 @@ abstract class QuizController extends GetxController with GetSingleTickerProvide
   final RxBool isSelected = false.obs;
   late RxInt questionsAnswered = 0.obs;
   late RxInt answeredCorrectly = 0.obs;
-  late RxList<Question> questions;
-  List<Option> options = List.generate(41, (index) => Option(false.obs, 0.obs, 0.obs));
-  final int questions_length = 40;
+  late List<Question> questions;
+  late List<Option> options;
+  late List allQuestions;
 
   final box = GetStorage();
 
@@ -38,8 +38,7 @@ abstract class QuizController extends GetxController with GetSingleTickerProvide
   void checkAnswer(Question question,int index);
 
   void nextQuestion() {
-    print(questions_length);
-    if (questionID != questions_length) {
+    if (questionID != questions.length) {
       pageController.nextPage(
           duration: Duration(milliseconds: 250),
           curve: Curves.ease);
@@ -54,20 +53,13 @@ abstract class QuizController extends GetxController with GetSingleTickerProvide
   }
 
   void setLikeButtonBool(){
-    if(questions[questionID.value-1].isLiked == false){
-
+    if(questions[questionID.value-1].isLiked.value == false){
       questions[questionID.value-1].isLiked.value = true;
-      List<dynamic> og = box.read("fav");
-      og.add(questions[questionID.value-1].id);
-      box.write("fav", og);
     }
     else{
       questions[questionID.value-1].isLiked.value = false;
-      List<dynamic> og = box.read("fav");
-      og.removeWhere((element) => element == questions[questionID.value-1].id);
-      box.write("favourite", og);
     }
   }
-  void endQuiz();
+  void endQuiz(bool quit);
 
 }

@@ -5,11 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/rapid_controller.dart';
-import 'package:theorytest/models/question.dart';
 import 'package:theorytest/views/dashboard/dashboard.dart';
 import 'package:theorytest/views/quizzes/components/question_card.dart';
 
-import '../../models/question.dart';
 
 class rapidQuizScreen extends StatelessWidget {
   @override
@@ -90,8 +88,7 @@ class rapidQuizScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(()=> Text("Question ${_controller
-                                .getQuestionID} of ${_controller
-                                .questions_length}",
+                                .getQuestionID} of ${_controller.questions.length}",
                               style: GoogleFonts.lato(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 21.sp,
@@ -135,7 +132,7 @@ class rapidQuizScreen extends StatelessWidget {
                             LinearPercentIndicator(
                               lineHeight: 13,
                               barRadius: Radius.circular(50),
-                              percent: (_controller.questionsAnswered) / 40,
+                              percent: (_controller.questionsAnswered) / _controller.questions.length,
                               linearGradient: LinearGradient(
                                   colors: [
                                     Colors.blueAccent,
@@ -151,7 +148,7 @@ class rapidQuizScreen extends StatelessWidget {
                 SizedBox(height: 10,),
                 Container(
                     width: 0.9.sw,
-                    height: 0.53.sh,
+                    height: 0.62.sh,
                     margin: EdgeInsets.all(20),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -173,7 +170,7 @@ class rapidQuizScreen extends StatelessWidget {
                               onPageChanged: (index) =>
                                   _controller.updateTheQnNum(index%40 + 1),
                               itemBuilder: (context, index) {
-                                return questionCard(question: sample_date[index % 40],controller: Get.find<rapidQuestionController>());
+                                return questionCard(question: _controller.questions[index % 40],controller: Get.find<rapidQuestionController>());
                               },
                             ),)
                         ])

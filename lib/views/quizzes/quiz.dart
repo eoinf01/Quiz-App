@@ -5,9 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/question_controller.dart';
-import 'package:theorytest/views/dashboard/dashboard.dart';
 import 'package:theorytest/views/quizzes/components/question_card.dart';
-
 class questionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,7 +46,7 @@ class questionScreen extends StatelessWidget {
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                Get.offAll(()=>MyDashBoard());
+                                _controller.endQuiz(true);
                               },
                             ), TextButton(
                               child: const Text('No'),
@@ -87,8 +85,7 @@ class questionScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Obx(()=> Text("Question ${_controller
-                            .getQuestionID} of ${_controller
-                            .questions_length}",
+                            .getQuestionID} of ${_controller.questions.length}",
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
                             fontSize: 21.sp,
@@ -132,7 +129,7 @@ class questionScreen extends StatelessWidget {
                         LinearPercentIndicator(
                           lineHeight: 13,
                           barRadius: Radius.circular(50),
-                          percent: (_controller.questionsAnswered) / 40,
+                          percent: (_controller.questionsAnswered) / _controller.questions.length,
                           linearGradient: LinearGradient(
                               colors: [
                                 Colors.blueAccent,
@@ -148,7 +145,7 @@ class questionScreen extends StatelessWidget {
             SizedBox(height: 10,),
             Container(
               width: 0.9.sw,
-                  height: 0.53.sh,
+                  height: 0.62.sh,
                   margin: EdgeInsets.all(20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -186,7 +183,7 @@ class questionScreen extends StatelessWidget {
                         child: Obx(()=>
                             AnimatedContainer(duration: Duration(milliseconds: 2000),
                               curve: Curves.easeIn,
-                              child:                             Icon(Icons.favorite,color: _controller.questions[_controller.questionID.value-1].isLiked.value ? Colors.red : Colors.grey,size: 33,),)
+                              child:                             Icon(Icons.favorite,color: _controller.questions[_controller.questionID.value -1].isLiked.value? Colors.red : Colors.grey,size: 33,),)
                           ,)
                       )
                     ],

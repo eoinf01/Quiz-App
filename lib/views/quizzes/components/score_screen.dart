@@ -10,13 +10,14 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:theorytest/controllers/score_controller.dart';
 import 'package:theorytest/views/quizzes/components/custom_clipper.dart';
 
+import '../../../models/question.dart';
 import '../../dashboard/dashboard.dart';
 
 
 class ScoreScreen extends StatelessWidget{
   final int result;
-
-  ScoreScreen({required this.result});
+  final List<Question> questions;
+  ScoreScreen({required this.result,required this.questions});
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -105,7 +106,7 @@ class ScoreScreen extends StatelessWidget{
                           height: 0.55.sw,
                           child: Obx(()=> CircularPercentIndicator(
                             radius: 0.25.sw,
-                            percent: (result / 40),
+                            percent: (result / questions.length),
                             lineWidth: 15,
                             circularStrokeCap: CircularStrokeCap.round,
                             linearGradient: _scoreController.progressBackground,
@@ -118,7 +119,7 @@ class ScoreScreen extends StatelessWidget{
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text("${((_scoreController.time.value / 40)* 100).round()}",
+                                        Text("${((_scoreController.time.value / questions.length)* 100).round()}",
                                             style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.black,fontSize: 60.sp)
                                         ),
                                         Column(
@@ -134,7 +135,7 @@ class ScoreScreen extends StatelessWidget{
                                     Text("Correct Questions",
                                         style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey,fontSize: 12.sp)
                                     ),
-                                    Text("${result}/40",
+                                    Text("${result}/${questions.length}",
                                         style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey,fontSize: 12.sp)
                                     ),
                                   ],

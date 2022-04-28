@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:theorytest/controllers/quiz_controller.dart';
@@ -9,25 +7,23 @@ import 'package:theorytest/views/quizzes/components/score_screen.dart';
 
 import '../views/dashboard/dashboard.dart';
 
-class QuestionController extends QuizController{
+class favouritesController extends QuizController{
 
   @override
   void onInit() {
     super.onInit();
-    options = List.generate(41, (index) => Option(false.obs, 0.obs, 0.obs));
     pageController = PageController();
-    Random random = new Random();
     allQuestions = [];
     jsonDecode(box.read("questions")).forEach((element)=>{
       allQuestions.add(Question.fromJson(element))
     });
-    questions =[];
-    while(questions.length < 40){
-      int randomIndex = random.nextInt(allQuestions.length);
-      if(!questions.contains(allQuestions[randomIndex])){
-        questions.add(allQuestions[randomIndex]);
+    questions = new RxList();
+    allQuestions.forEach((item)=>{
+      if(item.isLiked.value){
+        questions.add(item)
       }
-    }
+    });
+    options = List.generate(questions.length+1, (index) => Option(false.obs, 0.obs, 0.obs));
     animationController = AnimationController(vsync: this,duration: Duration(seconds: 2700));
 
     animation = StepTween(begin: 2700,end: 0).animate(animationController)..addListener(() {
@@ -45,18 +41,17 @@ class QuestionController extends QuizController{
 
     if(question.answers == index){
       answeredCorrectly.value++;
-      question.isCorrect.value = true;
-      // List ids = box.read("correct");
-      // if(!ids.contains(question.id)){
-      //   ids.add(question.id);
-      //   box.write("correct", ids);
-      // }
+      List ids = box.read("correct");
+      if(!ids.contains(question.id)){
+        ids.add(question.id);
+        box.write("correct", ids);
+      }
     }
     else{
       int incorrect = box.read("incorrect");
       box.write("incorrect", ++incorrect);
     }
-    if(questionsAnswered == 40){
+    if(questionsAnswered == questions.length){
       endQuiz(false);
     }
     else{
@@ -73,13 +68,13 @@ class QuestionController extends QuizController{
 
     og.update("practice", (value) => practice);
     box.write("scores", og);
-
     box.write("questions",jsonEncode(allQuestions));
     if(quit){
       Get.offAll(()=>MyDashBoard());
     }
     else{
       Get.off(()=>ScoreScreen(result: answeredCorrectly.value,questions: questions,),transition: Transition.fade);
+
     }
   }
 }
