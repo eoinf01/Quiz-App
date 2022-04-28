@@ -33,6 +33,16 @@ class BarChartSample1State extends State<BarChartSample1> {
     practiceData = og["practice"];
     rapidData = og["rapid"];
     marathonData = og["marathon"];
+
+    box.listenKey("scores", (value) {
+      practiceData = value["practice"];
+      rapidData = value["rapid"];
+      marathonData = value["marathon"];
+      if(mounted){
+        refreshState();
+      }
+    });
+
     data = practiceData;
   }
 
