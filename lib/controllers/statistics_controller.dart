@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,11 +20,9 @@ class statsController extends GetxController with GetSingleTickerProviderStateMi
   void onInit() {
     super.onInit();
     incorrectQuestions.value = box.read("incorrect");
-    sample_date.forEach((element) {
-      print(element.isCorrect.value);
-      if(element.isCorrect.value == true){
-        print("SUCESS ${element.isCorrect.value} ");
-        correctQuestions.value = correctQuestions.value + 1;
+    jsonDecode(box.read("questions")).forEach((element)=>{
+      if(Question.fromJson(element).isCorrect.value){
+        correctQuestions.value++
       }
     });
     _animationController = AnimationController(vsync: this,duration: Duration(seconds: 1));
