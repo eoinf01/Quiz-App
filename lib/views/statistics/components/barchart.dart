@@ -1,409 +1,339 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:theorytest/constants/constants.dart' as Constants;
+import 'package:theorytest/controllers/dashboard_controller.dart';
+import 'package:theorytest/models/legends_model.dart';
 
-class BarChartSample1 extends StatefulWidget {
-
-  const BarChartSample1({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => BarChartSample1State();
-}
-
-class BarChartSample1State extends State<BarChartSample1> {
-
-  String dropdownValue = "test";
-
+class BarChartSample1 extends StatelessWidget {
   final box = GetStorage();
-  late List<double> data;
-  late List<double> practiceData;
-  late List<double> rapidData;
-  late List<double> marathonData;
   final Color barBackgroundColor = Color.fromRGBO(243, 242, 240, 1);
-  final Duration animDuration = const Duration(milliseconds: 250);
+  final Duration animDuration = const Duration(milliseconds: 400);
 
-  int? touchedIndex = 0;
-
-  @override
-  void initState(){
-    super.initState();
-    Map og = box.read("scores");
-    practiceData = og["practice"];
-    rapidData = og["rapid"];
-    marathonData = og["marathon"];
-
-    box.listenKey("scores", (value) {
-      practiceData = value["practice"];
-      rapidData = value["rapid"];
-      marathonData = value["marathon"];
-      if(mounted){
-        refreshState();
-      }
-    });
-
-    data = practiceData;
-  }
-
-  Future<dynamic> refreshState() async {
-    setState(() {});
-    await Future<dynamic>.delayed(
-        animDuration + const Duration(milliseconds: 50));
-  }
+  dashboardController controller = Get.put(dashboardController());
+  List<LegendsModel> legends = [
+    LegendsModel(
+        name: "Practice",
+        color: Constants.lightblueCard,
+        bgColor: Constants.blueCard),
+    LegendsModel(
+        name: "Rapid",
+        color: Constants.lightorangeCard,
+        bgColor: Constants.orangeCard),
+    LegendsModel(
+        name: "Marathon", color: Colors.red.shade200, bgColor: Colors.red)
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 0.28.sh,
-      width: 1.sw,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(255,218, 218, 218,),
-            spreadRadius: 1.w,
-            blurRadius: 8.w,
-            offset: Offset(3.0.w,2.w)
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(20.r))
-      ),
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Container(
-                      margin:EdgeInsets.only(top: 10,left: 10),
-                      child: Text(
-                        'Last Five Tests',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),DropdownButton<String>(
-                      value: dropdownValue,
-                      items: [DropdownMenuItem(value: "test",child: Text(
-                        'Practice test',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w500),
-                      ),),DropdownMenuItem(value: "rapid",child: Text(
-                        'Rapid fire',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w500),
-                      ),),DropdownMenuItem(value: "marathon",child: Text(
-                        'Marathon',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w500),
-                      ),)],
-                      onChanged: (value) { setState(() {
-                        dropdownValue = value as String;
-                         if(dropdownValue=="test"){
-                           data = practiceData;
-                           refreshState();
-                         }
-                         else if(dropdownValue =="rapid"){
-                           data = rapidData;
-                           refreshState();
-                         }
-                         else if(dropdownValue =="marathon"){
-                           data = marathonData;
-                           refreshState();
-                         }
-                      }); },)],
-                  )
-                  ,
-                  SizedBox(
-                    height: 20.h,
+    return GetBuilder<dashboardController>(builder: (controller) {
+      return Container(
+        height: 0.30.sh,
+        width: 1.sw,
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Color.fromARGB(
+                    255,
+                    218,
+                    218,
+                    218,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding:  EdgeInsets.only(right: 8.0.w),
-                      child:
-                      BarChart(
+                  spreadRadius: 1.w,
+                  blurRadius: 8.w,
+                  offset: Offset(3.0.w, 2.w)),
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10.r))),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                // Wrap(
+                //   children: [
+                //     TextButton(onPressed: ()=>{}, child: Text("Rapid")),
+                //     TextButton(onPressed: ()=>{}, child: Text("Marathon")),
+                //     TextButton(onPressed: ()=>{}, child: Text("Practice")),
+                //   ],
+                // )
+              ]),
+              Container(
+                child: Text(
+                  'Last Three Tests',
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 30,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(
+                    width: 15,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: legends.length,
+                  itemBuilder: (BuildContext context, int index) => LegendsList(
+                    model: legends[index],
+                    index: index,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: BarChart(
                         mainBarData(),
                         swapAnimationDuration: animDuration,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
+    });
   }
 
   BarChartGroupData makeGroupData(
-      int x,
-      double y, {
-        bool isTouched = false,
-        Color barColor = Constants.blueCard,
-        double width = 22,
-        List<int> showTooltips = const [],
-      }) {
+    int x,
+    double y,
+    y2,
+    y3, {
+    bool isTouched = false,
+    Color barColor = Constants.blueCard,
+    double width = 20,
+    List<int> showTooltips = const [0],
+  }) {
     return BarChartGroupData(
       x: x,
+      barsSpace: 10,
+      showingTooltipIndicators: [controller.touchedIndex],
       barRods: [
         BarChartRodData(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          width: 20.w,
-          color: isTouched ? Color.fromRGBO(0, 114, 255,1) : Color.fromRGBO(231,231,231,1),
-          borderSide: const BorderSide(color: Colors.white, width: 0),
-          backDrawRodData: BackgroundBarChartRodData(
-            show: true,
-            toY: 100,
-            color: Colors.white,
-          ), toY: y,
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            width: width,
+            color: controller.touchedIndex == 0
+                ? Constants.primaryBlue
+                : Constants.lightblueCard,
+            borderSide: const BorderSide(color: Colors.white, width: 0),
+            backDrawRodData: BackgroundBarChartRodData(
+              show: true,
+              toY: 100,
+              fromY: -2,
+              color: Colors.grey.shade100,
+            ),
+            toY: y,
+            fromY: -2),
+        BarChartRodData(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            width: width,
+            color: controller.touchedIndex == 1
+                ? Constants.orangeCard
+                : Constants.lightorangeCard,
+            borderSide: const BorderSide(color: Colors.white, width: 0),
+            backDrawRodData: BackgroundBarChartRodData(
+              show: true,
+              fromY: -2,
+              toY: 100,
+              color: Colors.grey.shade100,
+            ),
+            toY: y2,
+            fromY: -2),
+        BarChartRodData(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            width: width,
+            color:
+                controller.touchedIndex == 2 ? Colors.red : Colors.red.shade300,
+            borderSide: const BorderSide(color: Colors.white, width: 0),
+            backDrawRodData: BackgroundBarChartRodData(
+              show: true,
+              toY: 100,
+              fromY: -2,
+              color: Colors.grey.shade100,
+            ),
+            toY: y3,
+            fromY: -2),
       ],
-      barsSpace: 1,
-      showingTooltipIndicators: showTooltips,
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(data.length, (i) {
-    switch (i) {
-      case 0:
-        if(data[4-i] == 0){
-          return makeGroupData(0, ((data[4-i]/40) * 100) + 2, isTouched: i == touchedIndex);
-        }
-        else{
-          return makeGroupData(0, (data[4-i]/40) * 100, isTouched: i == touchedIndex);
-        }
-      case 1:
-        if(data[4-i] == 0){
-          return makeGroupData(1, ((data[4-i]/40) * 100) + 2, isTouched: i == touchedIndex);
-        }
-        else{
-          return makeGroupData(1, (data[4-i]/40) * 100, isTouched: i == touchedIndex);
-        }
-      case 2:
-        if(data[4-i]==0){
-          return makeGroupData(2, ((data[4-i]/40) * 100)+2, isTouched: i == touchedIndex);
-
-        }
-        else{
-          return makeGroupData(2, (data[4-i]/40) * 100, isTouched: i == touchedIndex);
-        }
-      case 3:
-        if(data[4-i]==0){
-          return makeGroupData(3, ((data[4-i]/40) * 100)+2, isTouched: i == touchedIndex);
-
-        }
-        else{
-          return makeGroupData(3, (data[4-i]/40) * 100, isTouched: i == touchedIndex);
-        }
-      case 4:
-        if(data[4-i]==0){
-          return makeGroupData(4, ((data[4-i]/40) * 100)+2, isTouched: i == touchedIndex);
-
-        }
-        else{
-          return makeGroupData(4, (data[4-i]/40) * 100, isTouched: i == touchedIndex);
-        }
-      default:
-        return throw Error();
-    }
-  });
-
-  BarChartData mainBarData() {
-    return BarChartData(
-      barTouchData: BarTouchData(
-        touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.white,
-            getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              String weekDay;
-              switch (group.x.toInt()) {
-                case 0:
-                  if(data[4-group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 1:
-                  if(data[4-group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 2:
-                  if(data[4-group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 3:
-                  if(data[4-group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 4:
-                  if(data[4-group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 5:
-                  if(data[group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                case 6:
-                  if(data[group.x.toInt()] >= 35){
-                    weekDay = 'Passed';
-                  }
-                  else{
-                    weekDay = "Failed";
-                  }
-                  break;
-                default:
-                  throw Error();
-              }
-              return BarTooltipItem(
-                weekDay + '\n',
-                TextStyle(
-                  color: weekDay == "Failed" ? Colors.red: Colors.green,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.sp,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: (rod.fromY - 1).toString(),
-                    style:  TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              );
-            }),
-        touchCallback: (FlTouchEvent event, barTouchResponse) {
-          setState(() {
-            if(barTouchResponse?.spot != null){
-              touchedIndex = barTouchResponse?.spot!.touchedBarGroupIndex;
-            }
-          });
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        bottomTitles: AxisTitles(sideTitles: SideTitles(
-          showTitles: true,
-          getTitlesWidget: (value,titleMeta){
-            return
-            Padding(padding: EdgeInsets.only(top: 5),
-                child: Text("${((data[4-value.toInt()]/40)*100).toInt().toString()}",
-                style: TextStyle(
-                  color: value == touchedIndex ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold, fontSize: 14),)
-              );
-            },
-          ),
-        ),
-          leftTitles: AxisTitles(sideTitles: SideTitles(
-              getTitlesWidget: (value,titleMeta){
-                return
-                  Text("${value.toInt()}",
-                      textAlign: TextAlign.end,
-                      style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey,));
-                  },
-              showTitles: true,
-              reservedSize: 40,
-              interval: 20
-          ),
-      ),
-    )
-        , barGroups: showingGroups(),
-      gridData: FlGridData(show: false),
-      borderData: FlBorderData(show: false)
-    );
-  }
-
-  BarChartData randomData() {
-    return BarChartData(
-      barTouchData: BarTouchData(
-        enabled: false,
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 38,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      barGroups: List.generate(data.length, (i) {
+  List<BarChartGroupData> showingGroups() =>
+      List.generate(controller.practiceData.length - 2, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 0,);
+            return makeGroupData(
+                0,
+                ((controller.practiceData[4 - i] / 40) * 100),
+                ((controller.rapidData[4 - i] / 40) * 100),
+                ((controller.marathonData[4 - i] / 40) * 100),
+                isTouched: i == controller.touchedIndex);
           case 1:
-            return makeGroupData(1, 0,);
+            return makeGroupData(
+                1,
+                ((controller.practiceData[4 - i] / 40) * 100),
+                ((controller.rapidData[4 - i] / 40) * 100),
+                ((controller.marathonData[4 - i] / 40) * 100),
+                isTouched: i == controller.touchedIndex);
           case 2:
-            return makeGroupData(2, 5,);
+            return makeGroupData(
+                2,
+                ((controller.practiceData[4 - i] / 40) * 100),
+                ((controller.rapidData[4 - i] / 40) * 100),
+                ((controller.marathonData[4 - i] / 40) * 100),
+                isTouched: i == controller.touchedIndex);
           case 3:
-            return makeGroupData(3, 0,);
+            return makeGroupData(
+                3,
+                ((controller.practiceData[4 - i] / 40) * 100),
+                ((controller.rapidData[4 - i] / 40) * 100),
+                ((controller.marathonData[4 - i] / 40) * 100),
+                isTouched: i == controller.touchedIndex);
           case 4:
-            return makeGroupData(4, 0,);
-          case 5:
-            return makeGroupData(5, 0,);
-          case 6:
-            return makeGroupData(6, 0,);
+            return makeGroupData(
+                4,
+                ((controller.practiceData[4 - i] / 40) * 100),
+                ((controller.rapidData[4 - i] / 40) * 100),
+                ((controller.marathonData[4 - i] / 40) * 100),
+                isTouched: i == controller.touchedIndex);
           default:
             return throw Error();
         }
-      }),
-      gridData: FlGridData(show: false),
+      });
+
+  BarChartData mainBarData() {
+    return BarChartData(
+        groupsSpace: 20,
+        alignment: BarChartAlignment.center,
+        barTouchData: BarTouchData(
+          allowTouchBarBackDraw: true,
+          touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Colors.transparent,
+              tooltipPadding: const EdgeInsets.all(0),
+              tooltipMargin: 8,
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                return BarTooltipItem(
+                    rod.toY.round().toString(),
+                    const TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ));
+              }),
+          touchCallback: (FlTouchEvent event, barTouchResponse) {
+            if (barTouchResponse?.spot != null) {
+              controller.updateTouchIndex(
+                  barTouchResponse!.spot!.touchedRodDataIndex);
+            } else {}
+          },
+        ),
+        titlesData: FlTitlesData(
+          show: true,
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, titleMeta) {
+                switch (value.toInt()) {
+                  case 0:
+                    return Text("1st",
+                        textAlign: TextAlign.start,
+                        style: Get.textTheme.bodyText2
+                            ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                  case 1:
+                    return Text("2nd",
+                        textAlign: TextAlign.start,
+                        style: Get.textTheme.bodyText2
+                            ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                  case 2:
+                    return Text("3rd",
+                        textAlign: TextAlign.start,
+                        style: Get.textTheme.bodyText2
+                            ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                  case 3:
+                    return Text("4th",
+                        textAlign: TextAlign.start,
+                        style: Get.textTheme.bodyText2
+                            ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                  default:
+                    return Text("${value.toInt()}",
+                        textAlign: TextAlign.start,
+                        style: Get.textTheme.bodyText2
+                            ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                }
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+                getTitlesWidget: (value, titleMeta) {
+                  return Text("${value.toInt()}",
+                      textAlign: TextAlign.start,
+                      style: Get.textTheme.bodyText2
+                          ?.copyWith(color: Colors.grey, fontSize: 10.sp));
+                },
+                //style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey,));
+
+                showTitles: true,
+                reservedSize: 25,
+                interval: 20),
+          ),
+        ),
+        barGroups: showingGroups(),
+        gridData: FlGridData(show: false),
+        borderData: FlBorderData(show: false));
+  }
+}
+
+class LegendsList extends StatelessWidget {
+  LegendsModel model;
+  int index;
+  LegendsList({required this.model, required this.index});
+  dashboardController controller = Get.put(dashboardController());
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (() => controller.updateTouchIndex(index)),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            color: model.bgColor,
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: Row(
+          children: [
+            Icon(
+              Icons.circle,
+              size: 10,
+              color: model.color,
+            ),
+            SizedBox(
+              width: 6,
+            ),
+            Text("${model.name}",
+                style: Get.theme.textTheme.bodyText2
+                    ?.copyWith(color: Colors.white))
+          ],
+        ),
+      ),
     );
   }
-
 }
