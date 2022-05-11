@@ -49,7 +49,7 @@ class favouritesQuiz extends StatelessWidget {
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                Get.offAll(()=>MyDashBoard());
+                                _controller.endQuiz(true);
                               },
                             ), TextButton(
                               child: const Text('No'),
@@ -148,7 +148,7 @@ class favouritesQuiz extends StatelessWidget {
                 SizedBox(height: 10,),
                 Container(
                     width: 0.9.sw,
-                    height: 0.62.sh,
+                    height: 0.63.sh,
                     margin: EdgeInsets.all(20),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class favouritesQuiz extends StatelessWidget {
                               onPageChanged: (index) =>
                                   _controller.updateTheQnNum(index%_controller.questions.length + 1),
                               itemBuilder: (context, index) {
-                                return questionCard(question: sample_date[index % _controller.questions.length],controller: Get.find<favouritesController>(),);
+                                return questionCard(question: _controller.questions[index % _controller.questions.length],controller: Get.find<favouritesController>(),);
                               },
                             ),)
                         ])

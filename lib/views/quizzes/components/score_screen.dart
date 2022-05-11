@@ -34,7 +34,7 @@ class ScoreScreen extends StatelessWidget{
         context: context,
         minTextAdapt: false,
         orientation: Orientation.portrait);
-    scoreController _scoreController = Get.put(scoreController(result: result));
+    scoreController _scoreController = Get.put(scoreController(result: result,questions: questions));
 
     return Scaffold(
       extendBodyBehindAppBar: true,

@@ -11,14 +11,10 @@ class onboardController extends GetxController{
 
   RxString buttontext= "Next".obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool validatian = true;
   late TextEditingController textController;
   late PageController controller;
   late PageController imageController;
   late RxInt pageIndex;
-  double growStepWidth = 0.0;
-  double beginWidth=0.0;
-  double endWidth = 0.0;
   int totalPages = 2;
   bool showButton = false;
   final List<double> initScore = [0.0,0.0,0.0,0.0,0.0];
@@ -32,6 +28,7 @@ class onboardController extends GetxController{
     scores.putIfAbsent("rapid", () => initScore);
     scores.putIfAbsent("practice", () => initScore);
     scores.putIfAbsent("marathon", () => initScore);
+    scores.putIfAbsent("favourites", () => initScore);
     box.write("scores", scores);
     box.write("incorrect", 0);
     box.write("questions", jsonEncode(sample_date));

@@ -2,10 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:theorytest/themes.dart';
+import 'package:theorytest/views/categories/categories.dart';
 import 'package:theorytest/views/onboard/onboarding.dart';
+import 'package:theorytest/views/quizzes/components/score_screen.dart';
+import 'package:theorytest/views/statistics/statistics.dart';
 
 bool? onboarding;
 
@@ -52,6 +56,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage("assets/blob-scene-haikei-4.png"), context);
+    precacheImage(AssetImage("assets/alarm.png"), context);
+    precacheImage(AssetImage("assets/law.png"), context);
+    precacheImage(AssetImage("assets/low-poly-grid-haikei.png"), context);
+    precacheImage(AssetImage("assets/blob-scene-haikei-3.png"), context);
+    precacheImage(AssetImage("assets/bg.png"), context);
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: iOSTheme.lightTheme,

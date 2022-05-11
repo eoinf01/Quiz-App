@@ -11,6 +11,7 @@ class statsController extends GetxController with GetSingleTickerProviderStateMi
   late RxInt incorrectQuestions = 0.obs;
   late RxInt correctQuestions = 0.obs;
   final RxInt correctPercentage = 0.obs;
+  late List allQuestions;
   late AnimationController _animationController;
   late Animation<int> _animation;
   AnimationController get getAnimationController => this._animationController;
@@ -20,7 +21,8 @@ class statsController extends GetxController with GetSingleTickerProviderStateMi
   void onInit() {
     super.onInit();
     incorrectQuestions.value = box.read("incorrect");
-    jsonDecode(box.read("questions")).forEach((element)=>{
+    allQuestions = jsonDecode(box.read("questions"));
+    allQuestions.forEach((element)=>{
       if(Question.fromJson(element).isCorrect.value){
         correctQuestions.value++
       }

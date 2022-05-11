@@ -4,11 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:theorytest/constants/constants.dart' as Constants;
 
+import '../models/question.dart';
+
 class scoreController extends GetxController with GetSingleTickerProviderStateMixin{
 
   final int result;
   final RxInt time = 0.obs;
-  scoreController({required this.result});
+  final List<Question> questions;
+  scoreController({required this.result,required this.questions});
   late AnimationController _animationController;
   late Animation<int> _animation;
   late ConfettiController confettiController;
@@ -36,7 +39,7 @@ class scoreController extends GetxController with GetSingleTickerProviderStateMi
     ).animate(_animationController)..addListener(() {
       time.value = _animation.value;
     });
-    if(result < 35){
+    if(result/questions.length < 0.875){
       background = LinearGradient(colors: [Color.fromARGB(253, 75, 47,255),
         Color.fromARGB(255,46,159,255,),]);
       message = "Unlucky!☹️";
@@ -86,6 +89,7 @@ class scoreController extends GetxController with GetSingleTickerProviderStateMi
   void onClose() {
     super.onClose();
     _animationController.dispose();
+    confettiController.dispose();
   }
 
 }

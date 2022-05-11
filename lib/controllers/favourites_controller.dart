@@ -41,11 +41,7 @@ class favouritesController extends QuizController{
 
     if(question.answers == index){
       answeredCorrectly.value++;
-      List ids = box.read("correct");
-      if(!ids.contains(question.id)){
-        ids.add(question.id);
-        box.write("correct", ids);
-      }
+      question.isCorrect.value = true;
     }
     else{
       int incorrect = box.read("incorrect");
@@ -62,11 +58,11 @@ class favouritesController extends QuizController{
   @override
   void endQuiz(bool quit){
     Map og = box.read("scores");
-    List<double> practice = List.from(og["practice"]);
-    practice.removeAt(0);
-    practice.add(answeredCorrectly.value.toDouble());
+    List<double> favs = List.from(og["favourites"]);
+    favs.removeAt(0);
+    favs.add(answeredCorrectly.value.toDouble());
 
-    og.update("practice", (value) => practice);
+    og.update("favourites", (value) => favs);
     box.write("scores", og);
     box.write("questions",jsonEncode(allQuestions));
     if(quit){

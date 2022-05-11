@@ -49,7 +49,7 @@ class rapidQuizScreen extends StatelessWidget {
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                Get.offAll(()=>MyDashBoard());
+                                _controller.endQuiz(true);
                               },
                             ), TextButton(
                               child: const Text('No'),
