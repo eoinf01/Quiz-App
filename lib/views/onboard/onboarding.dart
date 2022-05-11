@@ -148,7 +148,8 @@ class NewOnboard extends StatelessWidget{
                                                           if(controller.pageIndex == 2) {
                                                             if(controller.formKey.currentState!.validate()){
                                                               controller.setPrefValue(controller.textController.text.toString());
-                                                                Get.offAll(()=>MyDashBoard());
+                                                              FocusManager.instance.primaryFocus?.unfocus();
+                                                              Future.delayed(Duration(milliseconds: 750),()=>Get.offAll(()=>MyDashBoard()));
                                                             }
                                                           }
                                                           else{

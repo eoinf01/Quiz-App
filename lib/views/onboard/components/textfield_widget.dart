@@ -1,29 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:theorytest/constants/constants.dart' as Constants;
 
-class inputButton extends StatefulWidget {
-  late final TextEditingController myController;
-  late Key validate;
+import '../../../controllers/onboard_controller.dart';
 
-  inputButton({Key? key, required this.myController,required this.validate}) : super(key: key);
+class inputButton extends StatelessWidget {
 
-  @override
-  inputButtonState createState() {
-    return inputButtonState();
-  }
-}
-
-class inputButtonState extends State<inputButton>{
-
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    widget.myController.dispose();
-    super.dispose();
-  }
   
   String? validateText(String text){
     if(text.isNotEmpty && text.length< 12){
@@ -33,13 +17,13 @@ class inputButtonState extends State<inputButton>{
       return "Profile name must be less than 12 characters.";
     }
   }
-
+  onboardController controller = Get.put(onboardController());
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 0.8.sw,
       child: Form(
-        key: widget.validate,
+        key: controller.formKey,
         child: Column(
           children: [
             TextFormField(
@@ -55,13 +39,13 @@ class inputButtonState extends State<inputButton>{
                 }
                 return null;
               },
-              controller: widget.myController,
+              controller: controller.textController,
               decoration: InputDecoration(
                   prefixIcon: Icon(CupertinoIcons.profile_circled),
                   fillColor: Colors.white,
                   filled: true,
                   hintText:"Profile name",
-                  errorText: validateText(widget.myController.text),
+                  errorText: validateText(controller.textController.text),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Colors.grey,

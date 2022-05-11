@@ -47,7 +47,7 @@ class OnboardPage extends StatelessWidget{
                 )),textAlign: TextAlign.center,),
               showButton == true ? SizedBox(height: 17.h,): SizedBox(height: 10.h,),
               if(showButton == true)
-                inputButton(myController: controller.textController,validate: controller.formKey,)
+                inputButton()
             ],
 
           ));
